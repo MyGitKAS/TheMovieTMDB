@@ -11,7 +11,7 @@ class MoviesCollectionViewCell: UICollectionViewCell {
     
     private var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 10
         imageView.layer.masksToBounds = true
         return imageView
@@ -19,9 +19,9 @@ class MoviesCollectionViewCell: UICollectionViewCell {
     
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .bold)
         label.textAlignment = .center
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         return label
     }()
     
@@ -58,7 +58,7 @@ extension MoviesCollectionViewCell {
            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-           imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.9),
+           imageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8),
            
            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor),
            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

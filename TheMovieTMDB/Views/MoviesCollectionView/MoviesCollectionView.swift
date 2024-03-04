@@ -18,7 +18,7 @@ class MoviesCollectionView: UICollectionView {
             layout.minimumLineSpacing = 10
             layout.scrollDirection = .vertical
             let cellWidth = UIScreen.main.bounds.width
-            layout.itemSize = CGSize(width: cellWidth / 2 - 15, height: 290)
+            layout.itemSize = CGSize(width: cellWidth / 2 - 15, height: 300)
         }
     }
 

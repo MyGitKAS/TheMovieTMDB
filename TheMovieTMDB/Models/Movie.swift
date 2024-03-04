@@ -28,6 +28,14 @@ struct Movie: Codable {
     let revenue, runtime: Int?
     let spokenLanguages: [SpokenLanguage]?
     let status, tagline: String?
+    
+    func getReleaseYear() -> String? {
+            guard let dateString = releaseDate else {
+                return nil
+            }
+            let year = String(dateString.prefix(4))
+            return year
+        }
 
     enum CodingKeys: String, CodingKey {
         case adult

@@ -136,7 +136,7 @@ class FullScreenMovieView: UIView {
     }
     
     func setupData(movie: Movie, poster: UIImage) {
-        self.titleLabel.text = movie.originalTitle
+        self.titleLabel.text = movie.title
         self.budgetDigitLabel.text = "\(movie.budget ?? 000_000)$"
         self.genreLabel.text = movie.genres?.first?.name
         self.overviewLabel.text = movie.overview

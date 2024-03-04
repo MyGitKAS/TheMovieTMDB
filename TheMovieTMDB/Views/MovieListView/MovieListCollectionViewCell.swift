@@ -90,7 +90,7 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     
     func setData(movie: Movie) {
         self.titleLabel.text = movie.title
-        self.releaseLabel.text = movie.releaseDate
+        self.releaseLabel.text = movie.getReleaseYear()
         if let rate = movie.voteAverage {
             let rate = String(rate)
             self.voteAverageLabel.text = "\(rate)*"
