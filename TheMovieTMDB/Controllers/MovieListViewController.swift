@@ -8,13 +8,19 @@
 import UIKit
 
 class MovieListViewController: UIViewController {
+    
+    var completionHandler: (() -> String)?
+    
+    private var moviesArray: Movies?
+    private var currentPage = 1
+    private var genreID: String!
         
     private lazy var collectionView: MovieListView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = MovieListView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(MovieListCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        collectionView.register(MovieListCollectionViewCell.self, forCellWithReuseIdentifier: "MovieListCell")
         return collectionView
     }()
     
@@ -25,24 +31,75 @@ class MovieListViewController: UIViewController {
     }
     
     private func setupConfiguration() {
+        genreID = completionHandler?() ?? ""
+        getMovies(genreID: genreID, pageNumber: 1)
         view.addSubview(collectionView)
-        self.navigationItem.title = "Drams"
+    }
+    
+    private func getMovies(genreID: String, pageNumber: Int) {
+        let endpoint = EndpointMovie.getMoviesAtGenre(id: genreID, pageNumber: pageNumber)
+        NetworkManager.getData(endpoint: endpoint) { result in
+            switch result {
+            case .failure(_): return
+            case .success(let movies):
+                guard let movies = movies else { return }
+                DispatchQueue.main.async {
+                    if self.moviesArray == nil {
+                        self.moviesArray = movies
+                    } else {
+                        self.moviesArray?.results.append(contentsOf: movies.results)
+                    }
+                    self.collectionView.reloadData()
+                }
+            }
+        }
     }
 }
 
 extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return moviesArray?.results.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MovieListCollectionViewCell
-        cell.imageView .image = UIImage(named: "test_poster")
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieListCell", for: indexPath) as! MovieListCollectionViewCell
+        guard let movies = moviesArray else { return cell }
+        let movie = movies.results[indexPath.row]
+        let imageUrl = movies.results[indexPath.row].posterPath ?? ""
+        let url = EndpointImage.posterUrl(width: 200, idImage: imageUrl).path()
+        DispatchQueue.global().async {
+            NetworkManager.downloadImageWith(urlString: url) { image in
+                DispatchQueue.main.async {
+                    cell.setData(movie: movie)
+                    guard let image = image else {
+                        cell.setImage(image: UIImage(named: "test_poster")!)
+                        return
+                    }
+                    cell.setImage(image: image)
+                }
+            }
+        }
         return cell
     }
     
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let height = scrollView.frame.size.height
+
+        if offsetY > contentHeight - height {
+            currentPage += 1
+            getMovies(genreID: genreID, pageNumber: currentPage)
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //
+        let vc = FullScreenMovieViewController()
+        if let id = moviesArray?.results[indexPath.row].id {
+            let idString = String(id)
+            vc.completionHandler = { return idString }
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

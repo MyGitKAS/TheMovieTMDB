@@ -11,7 +11,7 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize() , weight: .bold)
+        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize() , weight: .bold)
         label.numberOfLines = 4
         return label
     }()
@@ -37,17 +37,17 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    let sourceLabel: UILabel = {
+    let releaseLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: TextSize.small.getSize() , weight: .light)
+        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize() , weight: .light)
         return label
     }()
     
-    let dateLabel: UILabel = {
+    let voteAverageLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = UIFont.systemFont(ofSize: TextSize.small.getSize() , weight: .light)
+        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize() , weight: .light)
         return label
     }()
     
@@ -83,10 +83,24 @@ class MovieListCollectionViewCell: UICollectionViewCell {
         stackView.addArrangedSubview(verticalStackView)
         verticalStackView.addArrangedSubview(titleLabel)
         verticalStackView.addArrangedSubview(horizontalStackView)
-        horizontalStackView.addArrangedSubview(sourceLabel)
-        horizontalStackView.addArrangedSubview(dateLabel)
+        horizontalStackView.addArrangedSubview(releaseLabel)
+        horizontalStackView.addArrangedSubview(voteAverageLabel)
         addSubview(stackView)
     }
+    
+    func setData(movie: Movie) {
+        self.titleLabel.text = movie.title
+        self.releaseLabel.text = movie.releaseDate
+        if let rate = movie.voteAverage {
+            let rate = String(rate)
+            self.voteAverageLabel.text = "\(rate)*"
+        }
+    }
+    
+    func setImage(image: UIImage) {
+        self.imageView.image = image
+    }
+    
 }
 
 extension MovieListCollectionViewCell {

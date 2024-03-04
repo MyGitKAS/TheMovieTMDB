@@ -58,7 +58,12 @@ extension GenresViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+        let vc = MovieListViewController()
+        if let id = genres?.genres[indexPath.row].id {
+            let idString = String(id)
+            vc.completionHandler = { return idString }
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -13,7 +13,6 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.layer.cornerRadius = 10
-        imageView.image = UIImage(named: "test_poster")
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -22,7 +21,6 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         label.textAlignment = .center
-        label.text = "Title Movie$"
         label.numberOfLines = 1
         return label
     }()
