@@ -4,48 +4,59 @@
 //
 //  Created by Aleksey Kuhlenkov on 2.03.24.
 //
-// id: 157336
+
 import UIKit
-
-protocol NetworkManagerProtocol {
-
-}
 
 class NetworkManager {
     
-    private let key = "6893d4d853e6acfbfc8cecb19397223f"
+   static private let key = "6893d4d853e6acfbfc8cecb19397223f"
     
-    func getData(endpoint: EndpointMovie, completion: @escaping (Result<Movies?, Error>) -> Void) {
+   static func getData(endpoint: EndpointMovie, completion: @escaping (Result<Movies?, Error>) -> Void) {
         guard let url = URL(string:"\(endpoint.baseURL)\(endpoint.path())api_key=\(key)") else {
             completion(.failure(NetworkError.invalidURL))
             return
         }
         fetch(url) { (result: Result<Movies, Error>) in
             switch result {
-            case .success(let newsModel):
-                completion(.success(newsModel))
+            case .success(let data):
+                completion(.success(data))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    func getOneMovie(endpoint: EndpointMovie, completion: @escaping (Result<Movie?, Error>) -> Void) {
+   static func getOneMovie(endpoint: EndpointMovie, completion: @escaping (Result<Movie?, Error>) -> Void) {
         guard let url = URL(string:"\(endpoint.baseURL)\(endpoint.path())api_key=\(key)") else {
             completion(.failure(NetworkError.invalidURL))
             return
         }
         fetch(url) { (result: Result<Movie, Error>) in
             switch result {
-            case .success(let newsModel):
-                completion(.success(newsModel))
+            case .success(let data):
+                completion(.success(data))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    func downloadImageWith(urlString: String?, completion: @escaping (UIImage?) -> Void) {
+   static func getGenres(endpoint: EndpointMovie, completion: @escaping (Result<Genres?, Error>) -> Void) {
+        guard let url = URL(string:"\(endpoint.baseURL)\(endpoint.path())api_key=\(key)") else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        fetch(url) { (result: Result<Genres, Error>) in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+   static func downloadImageWith(urlString: String?, completion: @escaping (UIImage?) -> Void) {
         guard let stringUrl = urlString, let url = URL(string: stringUrl) else {
             completion(nil)
             return
@@ -65,7 +76,7 @@ class NetworkManager {
         }.resume()
     }
     
-    private func fetch<T: Codable>(_ url: URL, completion: @escaping (Result<T, Error>) -> Void) {
+   static private func fetch<T: Codable>(_ url: URL, completion: @escaping (Result<T, Error>) -> Void) {
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))

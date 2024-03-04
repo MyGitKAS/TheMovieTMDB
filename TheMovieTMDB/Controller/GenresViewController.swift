@@ -1,0 +1,75 @@
+//
+//  GenresViewController.swift
+//  TheMovieTMDB
+//
+//  Created by Aleksey Kuhlenkov on 3.03.24.
+//
+
+import UIKit
+
+class GenresViewController: UIViewController {
+    
+    var genres: Genres?
+    
+    private lazy var collectionView: GenresCollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = GenresCollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(GenresCollectionViewCell.self, forCellWithReuseIdentifier: "GenresCell")
+        return collectionView
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupConfiguration()
+        setupConstraints()
+    }
+    
+    private func setupConfiguration() {
+        self.navigationItem.title = "Choose your genre"
+        view.addSubview(collectionView)
+        
+        let Endpoint = EndpointMovie.getGenres
+        NetworkManager.getGenres(endpoint: Endpoint) { result in
+            switch result {
+            case .failure(_): return
+            case.success(let genres):
+                DispatchQueue.main.async {
+                    self.genres = genres
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+    }
+}
+
+extension GenresViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GenresCell", for: indexPath) as! GenresCollectionViewCell
+        guard let genres = genres else { return cell }
+        let text = genres.genres[indexPath.row].name
+        cell.setTitle(title: text)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return genres?.genres.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+    }
+}
+
+extension GenresViewController {
+    private func setupConstraints() {
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
