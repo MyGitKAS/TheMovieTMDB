@@ -37,7 +37,7 @@ class MovieListViewController: UIViewController {
     }
     
     private func getMovies(genreID: String, pageNumber: Int) {
-        let endpoint = EndpointMovie.getMoviesAtGenre(id: genreID, pageNumber: pageNumber)
+        let endpoint = EndpointMovie.moviesAtGenre(id: genreID, pageNumber: pageNumber)
         NetworkManager.getMovies(endpoint: endpoint) { result in
             switch result {
             case .failure(_): return

@@ -31,7 +31,7 @@ class GenresViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
         view.addSubview(collectionView)
         
-        let Endpoint = EndpointMovie.getGenres
+        let Endpoint = EndpointMovie.genres
         NetworkManager.getGenres(endpoint: Endpoint) { result in
             switch result {
             case .failure(_): return

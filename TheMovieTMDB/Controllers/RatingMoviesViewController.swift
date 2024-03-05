@@ -46,11 +46,22 @@ class RatingMoviesViewController: UIViewController {
     }
     
     @objc func segmentedControlValueChanged(_ sender: UISegmentedControl) {
-      // swich content
+        currentPage = 1
+        moviesArray = nil
+        getMovies(pageNumber: currentPage)
     }
     
+    
     private func getMovies(pageNumber: Int) {
-        let endpoint = EndpointMovie.topRatedMovies(pageNumber: pageNumber)
+        let endpoint: EndpointMovie
+        switch topSegmentedControl.selectedSegmentIndex {
+        case 0:
+            endpoint = .popularMovies(pageNumber: pageNumber)
+        case 1:
+            endpoint = .ratedMovies(pageNumber: pageNumber)
+        default:
+            return
+        }
         NetworkManager.getMovies(endpoint: endpoint) { result in
             switch result {
             case .failure(_): return
@@ -67,6 +78,24 @@ class RatingMoviesViewController: UIViewController {
             }
         }
     }
+//    private func getMovies(pageNumber: Int) {
+//        let endpoint = EndpointMovie.topRatedMovies(pageNumber: pageNumber)
+//        NetworkManager.getMovies(endpoint: endpoint) { result in
+//            switch result {
+//            case .failure(_): return
+//            case .success(let movies):
+//                guard let movies = movies else { return }
+//                DispatchQueue.main.async {
+//                    if self.moviesArray == nil {
+//                        self.moviesArray = movies
+//                    } else {
+//                        self.moviesArray?.results.append(contentsOf: movies.results)
+//                    }
+//                    self.collectionView.reloadData()
+//                }
+//            }
+//        }
+//    }
 }
 
 extension RatingMoviesViewController: UICollectionViewDataSource, UICollectionViewDelegate {

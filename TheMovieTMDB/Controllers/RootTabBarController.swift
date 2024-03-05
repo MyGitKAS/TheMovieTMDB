@@ -20,7 +20,7 @@ class RootTabBarController: UITabBarController {
 
         let secondViewController = UpcomingMoviesViewController()
         let secondNavController = UINavigationController(rootViewController: secondViewController)
-        secondNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 1)
+        secondNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostRecent, tag: 1)
 
         let thirdViewController = GenresViewController()
         let thirdNavController = UINavigationController(rootViewController: thirdViewController)
