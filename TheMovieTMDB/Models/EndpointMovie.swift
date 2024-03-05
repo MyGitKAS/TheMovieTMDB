@@ -14,7 +14,8 @@ enum EndpointMovie {
     case upcomingMovies(pageNumber: Int)
     case getGenres
     case getMoviesAtGenre(id: String, pageNumber: Int)
-    
+    case getMoviesOn(query: String)
+
     var baseURL:URL {URL(string: "https://api.themoviedb.org/3/")!}
     
     func path() -> String {
@@ -31,8 +32,9 @@ enum EndpointMovie {
             return "genre/movie/list?language=en&"
         case .getMoviesAtGenre(let id, let pageNumber):
             return "discover/movie?with_genres=\(id)&page=\(pageNumber)&"
-        }
+        case .getMoviesOn(let query):
+            let encodedQuery = query.replacingOccurrences(of: " ", with: "%20")
+            return "search/movie?query=\(encodedQuery)&sort_by=title.asc&"        }
     }
 }
 
-//https://api.themoviedb.org/3/discover/movie?with_genres=18&api_key=6893d4d853e6acfbfc8cecb19397223f

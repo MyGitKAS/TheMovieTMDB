@@ -28,6 +28,7 @@ class GenresViewController: UIViewController {
     
     private func setupConfiguration() {
         self.navigationItem.title = "Choose your genre"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
         view.addSubview(collectionView)
         
         let Endpoint = EndpointMovie.getGenres
@@ -41,6 +42,11 @@ class GenresViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc private func searchButtonTapped() {
+        let searchController = SearchViewController()
+        self.present(searchController, animated: true, completion: nil)
     }
 }
 

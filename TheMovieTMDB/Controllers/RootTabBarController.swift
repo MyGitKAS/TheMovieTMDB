@@ -12,15 +12,17 @@ class RootTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBar.tintColor = Constants.mainColor
+        
         let firstViewController = RatingMoviesViewController()
         let firstNavController = UINavigationController(rootViewController: firstViewController)
         firstNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 0)
 
-        let secondViewController = GenresViewController()
+        let secondViewController = UIViewController()
         let secondNavController = UINavigationController(rootViewController: secondViewController)
         secondNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 1)
 
-        let thirdViewController = UIViewController()
+        let thirdViewController = GenresViewController()
         let thirdNavController = UINavigationController(rootViewController: thirdViewController)
         thirdNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 2)
 

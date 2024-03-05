@@ -16,7 +16,7 @@ class RatingMoviesViewController: UIViewController {
         let segmentedControl = UISegmentedControl(items: ["Top popular", "Top rating"])
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
         segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.selectedSegmentTintColor = .orange
+        segmentedControl.selectedSegmentTintColor = Constants.mainColor
         segmentedControl.backgroundColor = .clear
         segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .selected)
         return segmentedControl
@@ -51,7 +51,7 @@ class RatingMoviesViewController: UIViewController {
     
     private func getMovies(pageNumber: Int) {
         let endpoint = EndpointMovie.topRatedMovies(pageNumber: pageNumber)
-        NetworkManager.getData(endpoint: endpoint) { result in
+        NetworkManager.getMovies(endpoint: endpoint) { result in
             switch result {
             case .failure(_): return
             case .success(let movies):
@@ -81,7 +81,7 @@ extension RatingMoviesViewController: UICollectionViewDataSource, UICollectionVi
             NetworkManager.downloadImageWith(urlString: url) { image in
                 DispatchQueue.main.async {
                     guard let image = image else {
-                        cell.setImage(image: UIImage(named: "test_poster")!)
+                        cell.setImage(image: UIImage(named: "no_image")!)
                         return
                     }
                     cell.setImage(image: image)

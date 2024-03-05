@@ -11,7 +11,7 @@ class NetworkManager {
     
    static private let key = "6893d4d853e6acfbfc8cecb19397223f"
     
-   static func getData(endpoint: EndpointMovie, completion: @escaping (Result<Movies?, Error>) -> Void) {
+   static func getMovies(endpoint: EndpointMovie, completion: @escaping (Result<Movies?, Error>) -> Void) {
         guard let url = URL(string:"\(endpoint.baseURL)\(endpoint.path())api_key=\(key)") else {
             completion(.failure(NetworkError.invalidURL))
             return

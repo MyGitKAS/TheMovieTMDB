@@ -1,20 +1,22 @@
 //
-//  MovieListViewController.swift
+//  SearchViewController.swift
 //  TheMovieTMDB
 //
-//  Created by Aleksey Kuhlenkov on 4.03.24.
+//  Created by Aleksey Kuhlenkov on 5.03.24.
 //
 
 import UIKit
 
-class MovieListViewController: UIViewController {
-    
-    var completionHandler: (() -> String)?
+class SearchViewController: UIViewController {
     
     private var moviesArray: Movies?
-    private var currentPage = 1
-    private var genreID: String!
-        
+    
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.backgroundColor = .white
+        return searchBar
+    }()
+  
     private lazy var collectionView: MovieListView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = MovieListView(frame: .zero, collectionViewLayout: layout)
@@ -31,24 +33,20 @@ class MovieListViewController: UIViewController {
     }
     
     private func setupConfiguration() {
-        genreID = completionHandler?() ?? ""
-        getMovies(genreID: genreID, pageNumber: 1)
+        view.addSubview(searchBar)
         view.addSubview(collectionView)
+        self.searchBar.delegate = self
     }
     
-    private func getMovies(genreID: String, pageNumber: Int) {
-        let endpoint = EndpointMovie.getMoviesAtGenre(id: genreID, pageNumber: pageNumber)
+    private func getMovies(query: String) {
+        let endpoint = EndpointMovie.getMoviesOn(query: query)
         NetworkManager.getMovies(endpoint: endpoint) { result in
             switch result {
             case .failure(_): return
             case .success(let movies):
                 guard let movies = movies else { return }
                 DispatchQueue.main.async {
-                    if self.moviesArray == nil {
-                        self.moviesArray = movies
-                    } else {
-                        self.moviesArray?.results.append(contentsOf: movies.results)
-                    }
+                    self.moviesArray = movies
                     self.collectionView.reloadData()
                 }
             }
@@ -56,7 +54,16 @@ class MovieListViewController: UIViewController {
     }
 }
 
-extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            if searchText == "" {
+                moviesArray = nil
+            }
+            getMovies(query: searchText)
+    }
+}
+
+extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return moviesArray?.results.count ?? 0
     }
@@ -81,18 +88,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
         }
         return cell
     }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let height = scrollView.frame.size.height
 
-        if offsetY > contentHeight - height {
-            currentPage += 1
-            getMovies(genreID: genreID, pageNumber: currentPage)
-        }
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = FullScreenMovieViewController()
         if let id = moviesArray?.results[indexPath.row].id {
@@ -103,11 +99,17 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
     }
 }
 
-extension MovieListViewController {
+extension SearchViewController {
     private func setupConstraints() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            searchBar.topAnchor.constraint(equalTo: view.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)

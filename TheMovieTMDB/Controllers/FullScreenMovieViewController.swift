@@ -44,7 +44,7 @@ class FullScreenMovieViewController: UIViewController {
                 guard let movie = movie else { return }
                 self.getImage(imagePath: movie.posterPath ?? "") { image in
                     DispatchQueue.main.async {
-                        self.mainView.setupData(movie: movie, poster: image ?? UIImage(named: "test_poster")!)
+                        self.mainView.setupData(movie: movie, poster: image ?? UIImage(named: "no_image")!)
                     }
                 }
             }

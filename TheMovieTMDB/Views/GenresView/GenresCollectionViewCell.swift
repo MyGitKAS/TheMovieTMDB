@@ -30,9 +30,8 @@ class GenresCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupConfiguration() {
-        
+        self.backgroundColor = Constants.mainColor
         self.layer.cornerRadius = 10
-        self.backgroundColor = .orange
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 0)
         self.layer.shadowRadius = 2
