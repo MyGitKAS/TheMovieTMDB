@@ -11,7 +11,7 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize() , weight: .bold)
+        label.font = UIFont.systemFont(ofSize: TextSize.extraLarge.getSize() , weight: .bold)
         label.numberOfLines = 4
         return label
     }()
@@ -40,14 +40,14 @@ class MovieListCollectionViewCell: UICollectionViewCell {
     let releaseLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize() , weight: .light)
+        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize() , weight: .light)
         return label
     }()
     
     let voteAverageLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize() , weight: .light)
+        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize() , weight: .light)
         return label
     }()
     
@@ -107,14 +107,15 @@ extension MovieListCollectionViewCell {
     
     private func setupConstraints() {
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            
+            imageView.widthAnchor.constraint(equalToConstant: 70)
         ])
-
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
     }
 }

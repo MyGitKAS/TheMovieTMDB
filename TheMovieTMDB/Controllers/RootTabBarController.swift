@@ -18,7 +18,7 @@ class RootTabBarController: UITabBarController {
         let firstNavController = UINavigationController(rootViewController: firstViewController)
         firstNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 0)
 
-        let secondViewController = UIViewController()
+        let secondViewController = UpcomingMoviesViewController()
         let secondNavController = UINavigationController(rootViewController: secondViewController)
         secondNavController.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 1)
 

@@ -5,7 +5,6 @@
 //  Created by Aleksey Kuhlenkov on 3.03.24.
 //
 
-import Foundation
 import UIKit
 
 class PosterView: UIImageView {
@@ -55,7 +54,6 @@ class PosterView: UIImageView {
     func setData(rating: Double, votesCount: Int) {
         self.ratingLabel.text = " \(rating) / 10 ★ "
         self.votesCountLabel.text = " \(votesCount) votes "
-        
     }
 }
 

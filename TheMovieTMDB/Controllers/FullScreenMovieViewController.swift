@@ -11,8 +11,7 @@ import UIKit
 class FullScreenMovieViewController: UIViewController {
     
     var completionHandler: (() -> String)?
-
-    var mainView: FullScreenMovieView!
+    private var mainView: FullScreenMovieView!
     
     override func loadView() {
         self.view = FullScreenMovieView(frame: UIScreen.main.bounds)

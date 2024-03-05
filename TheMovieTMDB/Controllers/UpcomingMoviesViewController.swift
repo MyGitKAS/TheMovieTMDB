@@ -1,26 +1,28 @@
 //
-//  MovieListViewController.swift
+//  UpcomingMoviesViewController.swift
 //  TheMovieTMDB
 //
-//  Created by Aleksey Kuhlenkov on 4.03.24.
+//  Created by Aleksey Kuhlenkov on 5.03.24.
 //
 
 import UIKit
 
-class MovieListViewController: UIViewController {
-    
-    var completionHandler: (() -> String)?
+class UpcomingMoviesViewController: UIViewController {
     
     private var moviesArray: Movies?
     private var currentPage = 1
-    private var genreID: String!
-        
-    private lazy var collectionView: MovieListView = {
+    
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let collectionView = MovieListView(frame: .zero, collectionViewLayout: layout)
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        let collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        collectionView.register(UpcomingCollectionViewCell.self, forCellWithReuseIdentifier: "UpcomingCell")
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(MovieListCollectionViewCell.self, forCellWithReuseIdentifier: "MovieListCell")
+        collectionView.isPagingEnabled = true
+        collectionView.backgroundColor = .black
         return collectionView
     }()
     
@@ -31,13 +33,16 @@ class MovieListViewController: UIViewController {
     }
     
     private func setupConfiguration() {
-        genreID = completionHandler?() ?? ""
-        getMovies(genreID: genreID, pageNumber: 1)
-        view.addSubview(collectionView)
+        self.view.addSubview(collectionView)
+        self.navigationItem.title = "Comming soon movie"
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: TextSize.extraLarge.getSize())]
+        self.navigationController?.navigationBar.titleTextAttributes = textAttributes
+        getMovies(pageNumber: currentPage)
     }
     
-    private func getMovies(genreID: String, pageNumber: Int) {
-        let endpoint = EndpointMovie.getMoviesAtGenre(id: genreID, pageNumber: pageNumber)
+    
+    private func getMovies(pageNumber: Int) {
+        let endpoint = EndpointMovie.upcomingMovies(pageNumber: pageNumber)
         NetworkManager.getMovies(endpoint: endpoint) { result in
             switch result {
             case .failure(_): return
@@ -56,21 +61,21 @@ class MovieListViewController: UIViewController {
     }
 }
 
-extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension UpcomingMoviesViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return moviesArray?.results.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieListCell", for: indexPath) as! MovieListCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UpcomingCell", for: indexPath) as! UpcomingCollectionViewCell
         guard let movies = moviesArray else { return cell }
-        let movie = movies.results[indexPath.row]
         let imageUrl = movies.results[indexPath.row].posterPath ?? ""
-        let url = EndpointImage.posterUrl(width: 200, idImage: imageUrl).path()
+        let url = EndpointImage.posterUrl(width: 300, idImage: imageUrl).path()
         DispatchQueue.global().async {
             NetworkManager.downloadImageWith(urlString: url) { image in
                 DispatchQueue.main.async {
-                    cell.setData(movie: movie)
+                    cell.setTitle(title: movies.results[indexPath.row].releaseDate ?? "No title")
                     guard let image = image else {
                         cell.setImage(image: UIImage(named: "no_image")!)
                         return
@@ -91,29 +96,29 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
             guard let totalPage = moviesArray?.totalPages else { return }
             if currentPage < totalPage {
                 currentPage += 1
-                getMovies(genreID: genreID, pageNumber: currentPage)
+                getMovies(pageNumber: currentPage)
             }
         }
     }
+}
+
+extension UpcomingMoviesViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = FullScreenMovieViewController()
-        if let id = moviesArray?.results[indexPath.row].id {
-            let idString = String(id)
-            vc.completionHandler = { return idString }
-        }
-        self.navigationController?.pushViewController(vc, animated: true)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.frame.size.width
+        let height = collectionView.frame.size.height - 20
+        return CGSize(width: width, height: height)
     }
 }
 
-extension MovieListViewController {
+extension UpcomingMoviesViewController {
     private func setupConstraints() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+           NSLayoutConstraint.activate([
+               collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+               collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+               collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+               collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+           ])
     }
 }

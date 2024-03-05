@@ -33,12 +33,12 @@ class RatingMoviesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getMovies(pageNumber: currentPage)
         setupConfiguration()
         setupConstraints()
     }
     
     private func setupConfiguration() {
+        getMovies(pageNumber: currentPage)
         view.addSubview(collectionView)
         view.addSubview(topSegmentedControl)
         self.navigationItem.title = "Popular Movies"
@@ -101,8 +101,11 @@ extension RatingMoviesViewController: UICollectionViewDataSource, UICollectionVi
         let height = scrollView.frame.size.height
 
         if offsetY > contentHeight - height {
-            currentPage += 1
-            getMovies(pageNumber: currentPage)
+            guard let totalPage = moviesArray?.totalPages else { return }
+            if currentPage < totalPage {
+                currentPage += 1
+                getMovies(pageNumber: currentPage)
+            }
         }
     }
     
