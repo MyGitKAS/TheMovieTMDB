@@ -138,8 +138,8 @@
 			children = (
 				3E6556CE2B97ABA80061F19C /* Endpoints */,
 				3E94EE7F2B932CB20008D69E /* Movies.swift */,
-				3E94EE9D2B94794B0008D69E /* Genres.swift */,
 				3E94EE812B932CC70008D69E /* Movie.swift */,
+				3E94EE9D2B94794B0008D69E /* Genres.swift */,
 				3E94EE7D2B932BC10008D69E /* NetworkManager.swift */,
 				3E94EE9F2B95B8BC0008D69E /* Constants.swift */,
 			);

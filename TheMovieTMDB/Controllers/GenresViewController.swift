@@ -9,7 +9,7 @@ import UIKit
 
 class GenresViewController: UIViewController {
     
-    var genres: Genres?
+    private var genres: Genres?
     
     private lazy var collectionView: GenresCollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -30,7 +30,6 @@ class GenresViewController: UIViewController {
         self.navigationItem.title = "Choose your genre"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchButtonTapped))
         view.addSubview(collectionView)
-        
         let Endpoint = EndpointMovie.genres
         NetworkManager.getGenres(endpoint: Endpoint) { result in
             switch result {
@@ -45,12 +44,13 @@ class GenresViewController: UIViewController {
     }
     
     @objc private func searchButtonTapped() {
-        let searchController = SearchViewController()
-        self.present(searchController, animated: true, completion: nil)
+        let vc = SearchViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 extension GenresViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GenresCell", for: indexPath) as! GenresCollectionViewCell
         guard let genres = genres else { return cell }
@@ -75,6 +75,7 @@ extension GenresViewController: UICollectionViewDataSource, UICollectionViewDele
 
 extension GenresViewController {
     private func setupConstraints() {
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),

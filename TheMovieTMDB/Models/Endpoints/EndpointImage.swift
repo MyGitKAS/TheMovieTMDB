@@ -16,7 +16,6 @@ enum EndpointImage {
         switch self {
         case .posterUrl(let width, let idImage):
             return "\(baseURL)w\(width)\(idImage)"
-   
         }
     }
 }

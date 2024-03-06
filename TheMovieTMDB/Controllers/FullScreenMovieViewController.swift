@@ -20,9 +20,12 @@ class FullScreenMovieViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupConfiguration()
+    }
+    
+    private func setupConfiguration() {
         let id = completionHandler?() ?? ""
         getMovie(id: id)
-        
     }
     
     private func getImage(imagePath: String, completion: @escaping (UIImage?) -> Void) {

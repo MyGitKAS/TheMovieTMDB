@@ -17,7 +17,7 @@ class UpcomingMoviesViewController: UIViewController {
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        let collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(UpcomingCollectionViewCell.self, forCellWithReuseIdentifier: "UpcomingCell")
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -113,12 +113,13 @@ extension UpcomingMoviesViewController: UICollectionViewDelegateFlowLayout {
 
 extension UpcomingMoviesViewController {
     private func setupConstraints() {
+
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-           NSLayoutConstraint.activate([
-               collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-               collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-               collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-               collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
-           ])
+        NSLayoutConstraint.activate([
+           collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+           collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+           collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+           collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
     }
 }

@@ -40,27 +40,32 @@ class FullScreenMovieView: UIView {
     
     private var genreLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize(), weight: .light)
+        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize(), weight: .medium)
         label.numberOfLines = 0
         return label
     }()
     
     private var durationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .light)
+        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize(), weight: .medium)
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
+        label.backgroundColor = .orange
         label.numberOfLines = 0
         return label
     }()
     
     private var productionCountryLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .light)
+        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize(), weight: .bold)
         label.numberOfLines = 0
         return label
     }()
 
     private var posterView: PosterView = {
         let imageView = PosterView(frame: .zero)
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -77,7 +82,7 @@ class FullScreenMovieView: UIView {
     private var overviewLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize() , weight: .medium)
+        label.font = UIFont.systemFont(ofSize: TextSize.large.getSize() , weight: .regular)
         return label
     }()
     
@@ -91,7 +96,7 @@ class FullScreenMovieView: UIView {
     
     private var budgetTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .regular)
+        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .bold)
         label.text = "Budget"
         label.numberOfLines = 1
         return label
@@ -99,7 +104,7 @@ class FullScreenMovieView: UIView {
     
     private var budgetDigitLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .regular)
+        label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .bold)
         label.numberOfLines = 1
         return label
     }()
@@ -120,19 +125,14 @@ class FullScreenMovieView: UIView {
         scrollView.addSubview(verticalStack)
         verticalStack.addArrangedSubview(titleLabel)
         verticalStack.addArrangedSubview(posterView)
-
-        
         verticalStack.addArrangedSubview(budgetStack)
         budgetStack.addArrangedSubview(budgetTitleLabel)
         budgetStack.addArrangedSubview(budgetDigitLabel)
-        
+        verticalStack.addArrangedSubview(productionCountryLabel)
         verticalStack.addArrangedSubview(genreStack)
         genreStack.addArrangedSubview(genreLabel)
         genreStack.addArrangedSubview(durationLabel)
-        genreStack.addArrangedSubview(productionCountryLabel)
-        
         verticalStack.addArrangedSubview(overviewLabel)
-        
     }
     
     func setupData(movie: Movie, poster: UIImage) {
@@ -143,7 +143,7 @@ class FullScreenMovieView: UIView {
         self.productionCountryLabel.text = movie.productionCountries?.first?.name
         self.durationLabel.text = String(movie.runtime ?? 000) + "min"
         self.posterView.image = poster
-        self.posterView.setData(rating: movie.voteAverage ?? 00.0, votesCount: movie.voteCount ?? 000)
+        self.posterView.setData(rating: movie.getFormattedVoteAverage() ?? "00.0", votesCount: movie.voteCount ?? 000)
         
     }
 }

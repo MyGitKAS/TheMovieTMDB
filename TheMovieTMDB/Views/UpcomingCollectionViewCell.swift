@@ -59,16 +59,14 @@ class UpcomingCollectionViewCell: UICollectionViewCell {
 
 extension UpcomingCollectionViewCell {
     private func setupConstraints() {
+        
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            titleLabel.bottomAnchor.constraint(equalTo: imageView.topAnchor)
         ])
-
     }
 }

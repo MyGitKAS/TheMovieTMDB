@@ -78,24 +78,6 @@ class RatingMoviesViewController: UIViewController {
             }
         }
     }
-//    private func getMovies(pageNumber: Int) {
-//        let endpoint = EndpointMovie.topRatedMovies(pageNumber: pageNumber)
-//        NetworkManager.getMovies(endpoint: endpoint) { result in
-//            switch result {
-//            case .failure(_): return
-//            case .success(let movies):
-//                guard let movies = movies else { return }
-//                DispatchQueue.main.async {
-//                    if self.moviesArray == nil {
-//                        self.moviesArray = movies
-//                    } else {
-//                        self.moviesArray?.results.append(contentsOf: movies.results)
-//                    }
-//                    self.collectionView.reloadData()
-//                }
-//            }
-//        }
-//    }
 }
 
 extension RatingMoviesViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -152,14 +134,12 @@ extension RatingMoviesViewController {
     private func setupConstraints() {
         
         topSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             topSegmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             topSegmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            topSegmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8)
-        ])
-        
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
+            topSegmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            
             collectionView.topAnchor.constraint(equalTo: topSegmentedControl.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),

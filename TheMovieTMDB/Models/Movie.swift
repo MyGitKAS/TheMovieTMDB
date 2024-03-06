@@ -36,6 +36,13 @@ struct Movie: Codable {
             let year = String(dateString.prefix(4))
             return year
         }
+    
+    func getFormattedVoteAverage() -> String? {
+        guard let voteAverage = voteAverage else {
+            return nil
+        }
+        return String(format: "%.1f", voteAverage)
+    }
 
     enum CodingKeys: String, CodingKey {
         case adult

@@ -57,6 +57,7 @@ class MovieListViewController: UIViewController {
 }
 
 extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return moviesArray?.results.count ?? 0
     }
@@ -108,6 +109,7 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
 
 extension MovieListViewController {
     private func setupConstraints() {
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),

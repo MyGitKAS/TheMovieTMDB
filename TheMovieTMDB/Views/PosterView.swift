@@ -20,6 +20,8 @@ class PosterView: UIImageView {
     private var ratingLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .bold)
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
         label.backgroundColor = .orange
         label.numberOfLines = 1
         return label
@@ -28,6 +30,8 @@ class PosterView: UIImageView {
     private var votesCountLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: TextSize.medium.getSize(), weight: .bold)
+        label.layer.cornerRadius = 5
+        label.clipsToBounds = true
         label.backgroundColor = .orange
         label.numberOfLines = 1
         return label
@@ -41,8 +45,6 @@ class PosterView: UIImageView {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupView()
-        setupConstraints()
     }
     
     private func setupView() {
@@ -51,7 +53,7 @@ class PosterView: UIImageView {
         addSubview(ratingStack)
     }
     
-    func setData(rating: Double, votesCount: Int) {
+    func setData(rating: String, votesCount: Int) {
         self.ratingLabel.text = " \(rating) / 10 ★ "
         self.votesCountLabel.text = " \(votesCount) votes "
     }
@@ -59,13 +61,14 @@ class PosterView: UIImageView {
 
 extension PosterView {
     private func setupConstraints() {
+        
         ratingStack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            ratingStack.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            ratingStack.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            ratingStack.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            ratingStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            ratingStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            ratingStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            
+            self.heightAnchor.constraint(equalToConstant: 500)
         ])
-        
-        self.heightAnchor.constraint(equalToConstant: 500).isActive = true
     }
 }

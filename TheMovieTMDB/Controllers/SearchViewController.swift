@@ -101,11 +101,11 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension SearchViewController {
     private func setupConstraints() {
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         searchBar.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: view.topAnchor),
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             

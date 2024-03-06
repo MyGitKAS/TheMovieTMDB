@@ -51,9 +51,9 @@ class MoviesCollectionViewCell: UICollectionViewCell {
 
 extension MoviesCollectionViewCell {
     private func setupConstraints() {
+        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -65,6 +65,6 @@ extension MoviesCollectionViewCell {
            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
        ])
-}
+    }
 }
 
