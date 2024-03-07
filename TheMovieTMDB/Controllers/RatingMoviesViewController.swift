@@ -62,7 +62,8 @@ class RatingMoviesViewController: UIViewController {
         default:
             return
         }
-        NetworkManager.getMovies(endpoint: endpoint) { result in
+        NetworkManager.getMovies(endpoint: endpoint) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .failure(_): return
             case .success(let movies):

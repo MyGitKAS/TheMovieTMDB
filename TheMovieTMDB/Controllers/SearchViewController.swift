@@ -40,7 +40,8 @@ class SearchViewController: UIViewController {
     
     private func getMovies(query: String) {
         let endpoint = EndpointMovie.moviesOn(query: query)
-        NetworkManager.getMovies(endpoint: endpoint) { result in
+        NetworkManager.getMovies(endpoint: endpoint) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .failure(_): return
             case .success(let movies):

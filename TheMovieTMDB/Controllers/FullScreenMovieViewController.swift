@@ -38,20 +38,28 @@ class FullScreenMovieViewController: UIViewController {
     }
     
     private func getMovie(id: String) {
-        let endpoint = EndpointMovie.movieFrom(id: id)
-        NetworkManager.getOneMovie(endpoint: endpoint) { result in
-            switch result {
-            case .failure(_): return
-            case .success(let movie):
-                guard let movie = movie else { return }
-                self.getImage(imagePath: movie.posterPath ?? "") { image in
-                    DispatchQueue.main.async {
-                        self.mainView.setupData(movie: movie, poster: image ?? UIImage(named: "no_image")!)
-                    }
-                }
-            }
-        }
-    }
+          let endpoint = EndpointMovie.movieFrom(id: id)
+          NetworkManager.getOneMovie(endpoint: endpoint) { [weak self] result in
+              guard let self = self else { return }
+              switch result {
+              case .failure(_): return
+              case .success(let movie):
+                  guard let movie = movie else { return }
+                  guard let posterPath = movie.posterPath else {
+                      DispatchQueue.main.async {
+                          self.mainView.setupData(movie: movie, poster: UIImage(named: "no_image")!)
+                      }
+                      return
+                  }
+                  self.getImage(imagePath: posterPath) { image in
+                      DispatchQueue.main.async {
+                          guard let image = image else { return }
+                          self.mainView.setupData(movie: movie, poster: image )
+                      }
+                  }
+              }
+          }
+      }
 }
 
 

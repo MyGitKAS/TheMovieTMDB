@@ -38,7 +38,8 @@ class MovieListViewController: UIViewController {
     
     private func getMovies(genreID: String, pageNumber: Int) {
         let endpoint = EndpointMovie.moviesAtGenre(id: genreID, pageNumber: pageNumber)
-        NetworkManager.getMovies(endpoint: endpoint) { result in
+        NetworkManager.getMovies(endpoint: endpoint) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .failure(_): return
             case .success(let movies):
