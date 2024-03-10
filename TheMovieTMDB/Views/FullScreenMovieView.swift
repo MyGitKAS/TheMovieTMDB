@@ -8,7 +8,7 @@
 import UIKit
 
 
-class FullScreenMovieView: UIView {
+final class FullScreenMovieView: UIView {
     
     private var scrollView: UIScrollView = {
         let scroll = UIScrollView()

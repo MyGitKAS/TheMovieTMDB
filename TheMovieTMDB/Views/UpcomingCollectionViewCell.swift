@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UpcomingCollectionViewCell: UICollectionViewCell {
+final class UpcomingCollectionViewCell: UICollectionViewCell {
     
     private var titleLabel: UILabel = {
         let label = UILabel()

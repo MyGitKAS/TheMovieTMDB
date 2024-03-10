@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MoviesCollectionView: UICollectionView {
+final class MoviesCollectionView: UICollectionView {
 
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)

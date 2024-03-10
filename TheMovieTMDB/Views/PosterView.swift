@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PosterView: UIImageView {
+final class PosterView: UIImageView {
 
     private var ratingStack: UIStackView = {
         let stack = UIStackView()

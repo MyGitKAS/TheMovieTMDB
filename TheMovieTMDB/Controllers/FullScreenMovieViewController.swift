@@ -7,8 +7,7 @@
 
 import UIKit
 
-
-class FullScreenMovieViewController: UIViewController {
+final class FullScreenMovieViewController: UIViewController {
     
     var completionHandler: (() -> String)?
     private var mainView: FullScreenMovieView!

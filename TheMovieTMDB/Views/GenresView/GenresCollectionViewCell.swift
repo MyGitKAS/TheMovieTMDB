@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GenresCollectionViewCell: UICollectionViewCell {
+final class GenresCollectionViewCell: UICollectionViewCell {
         
     private var titleLabel: UILabel = {
         let label = UILabel()

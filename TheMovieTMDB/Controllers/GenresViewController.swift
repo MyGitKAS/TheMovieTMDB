@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GenresViewController: UIViewController {
+final class GenresViewController: UIViewController {
     
     private var genres: Genres?
     

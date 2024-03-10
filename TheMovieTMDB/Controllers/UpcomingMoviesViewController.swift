@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UpcomingMoviesViewController: UIViewController {
+final class UpcomingMoviesViewController: UIViewController {
     
     private var moviesArray: Movies?
     private var currentPage = 1

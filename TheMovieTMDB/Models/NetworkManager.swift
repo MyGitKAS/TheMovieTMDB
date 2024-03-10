@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NetworkManager {
+final class NetworkManager {
     
    static private let key = "6893d4d853e6acfbfc8cecb19397223f"
     
